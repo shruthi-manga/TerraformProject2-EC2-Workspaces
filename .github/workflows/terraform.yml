@@ -1,0 +1,37 @@
+name: Terraform CICD
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  terraform-plan:
+    name: TerraformPlan
+    runs-on: ubuntu-latest
+    steps:
+      - name: CheckoutCode
+        uses: actions/checkout@v4
+      - name: SetupTerraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+      - name: ConfigureAWSCredentials
+        uses: aws-actionsconfigure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${secrets.AWS_ACCESS_KEY_ID}
+          aws-access-key: ${secrets.AWS_SECRET_ACCESS_KEY}
+          aws-region: ${secrets.AWS_REGION}
+      - name: TerraformInit
+        run: terraform init
+      - name: TerraformValidate
+        run: terraform validate
+      - name: TerraformPlan
+        run: terraform plan -var-file="dev.tfvars" -out=dev_plan
+      - name: TerraformApply
+        run: terraform apply dev_plan
+        
+          
+        
+          
+      
+
