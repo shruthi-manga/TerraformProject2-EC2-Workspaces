@@ -1,1 +1,25 @@
 name: Terraform CICD
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  terraform-plan:
+    name: TerraformPlan
+    runs-on: ubuntu-latest
+    steps:
+      - name: CheckoutCode
+        uses: actions/checkout@v4
+      - name: SetupTerraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+      - name: ConfigureAWSCredentials
+        uses: aws-actions/aws-credentials@v4
+        with:
+          
+        
+          
+      
+
